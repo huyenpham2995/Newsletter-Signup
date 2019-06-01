@@ -38,18 +38,20 @@ app.post("/", function(req, res) {
     url: 'https://us20.api.mailchimp.com/3.0/lists/' + process.env.AUDIENCE_ID,
     method: "POST",
     headers: {
-      "Authorization": "huyen " //+ process.env.API_KEY
+      "Authorization": "huyen "+ process.env.API_KEY
     },
     body: jsonData
   };
 
   request(options, function(error, response, body) {
     if (error) {
+      console.log("error");
       res.sendFile(__dirname + "/failure.html");
     } else {
       if(response.statusCode===200) {
         res.sendFile(__dirname + "/success.html");
       } else {
+        console.log(response.statusCode);
         res.sendFile(__dirname + "/failure.html");
       }
 

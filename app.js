@@ -1,4 +1,6 @@
 //jshint esversion: 6
+require('dotenv').config();
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
@@ -33,19 +35,25 @@ app.post("/", function(req, res) {
   var jsonData = JSON.stringify(data);
 
   var options = {
-    url: 'https://us20.api.mailchimp.com/3.0/lists/112198ec44',
+    url: 'https://us20.api.mailchimp.com/3.0/lists/' + process.env.AUDIENCE_ID,
     method: "POST",
     headers: {
-      "Authorization": "huyen 6334ed308c2d5123ff5f2f1d6e9e0454-us20"
+      "Authorization": "huyen " + process.env.API_KEY
     },
     body: jsonData
   };
 
   request(options, function(error, response, body) {
     if (error) {
-      console.log(error);
+      res.send("Error occurs");
     } else {
       console.log(response.statusCode);
+      if(response.statusCode===200) {
+        res.send("Success!");
+      } else {
+        res.send("Error");
+      }
+
     }
   });
 });
@@ -53,7 +61,3 @@ app.post("/", function(req, res) {
 app.listen(3000, function() {
   console.log("server is running on port 3000");
 });
-
-
-//API key: 6334ed308c2d5123ff5f2f1d6e9e0454-us20, last 4 digit is data server
-//Audience id; 112198ec44
